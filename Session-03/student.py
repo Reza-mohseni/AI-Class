@@ -2,16 +2,16 @@ class Student:
     def __init__(self, name, student_id):
         self.name = name
         self.student_id = student_id
-        self.grades = {}  # دیکشنری نمرات
+        self.grades = {}
 
-    # اضافه کردن نمره
+    
     def add_grade(self, course, grade):
         if grade < 0 or grade > 20:
             print("Invalid grade")
         else:
             self.grades[course] = grade
 
-    # محاسبه میانگین
+    
     def average(self):
         if len(self.grades) == 0:
             return 0
@@ -23,7 +23,7 @@ class Student:
         avg = s / len(self.grades)
         return avg
 
-    # درسی با بالاترین نمره
+    
     def best_course(self):
         max_grade = -1
         best_name = ""
@@ -33,7 +33,7 @@ class Student:
                 best_name = c
         return best_name
 
-    # درس‌های افتاده (زیر ۱۰)
+    
     def failed_courses(self):
         bad_courses = []
         for c in self.grades:
@@ -41,7 +41,7 @@ class Student:
                 bad_courses.append(c)
         return bad_courses
 
-    # تعیین وضعیت دانشجو
+    
     def status(self):
         avg = self.average()
         if avg >= 17:
@@ -53,7 +53,7 @@ class Student:
         else:
             return "Probation"
 
-    # چاپ کارنامه
+    
     def report(self):
         print(f"Student: {self.name} (ID: {self.student_id})")
         for c in self.grades:
@@ -66,7 +66,7 @@ class Student:
         print("---------------------------------")
 
 
-# --- بخش امتیازی: کلاس Classroom ---
+
 class Classroom:
     def __init__(self):
         self.students = []
@@ -92,16 +92,13 @@ class Classroom:
         return tot / len(self.students)
 
 
-# --- تست برنامه با متغیرهای a و b ---
-
-# دانشجوی اول
 a = Student("Sara Ahmadi", "40312345")
 a.add_grade("Math", 18)
 a.add_grade("Physics", 9)
 a.add_grade("Programming", 20)
 a.add_grade("English", 15)
 
-# دانشجوی دوم
+
 b = Student("Ali Rezaei", "40312346")
 b.add_grade("Math", 11)
 b.add_grade("Physics", 8)
