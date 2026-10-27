@@ -2,7 +2,6 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 banana_lengths = [18, 20, 17, 22]
 banana_widths = [3.5, 4.0, 3.2, 4.2]
 
@@ -23,72 +22,84 @@ for i in range(len(apple_lengths)):
 train_data = np.array(train_data)
 test_data = np.array(test_data)
 
-X_train, y_train = train_data[:, :2], train_data[:, 2]
-X_test, y_test = test_data[:, :2], test_data[:, 2]
+X_train = train_data[:, :2]
+y_train = train_data[:, 2]
 
+new_fruit = [19.0, 3.8]
+distances = []
 
-new_fruit = np.array([19.0, 3.8])
+for item in X_train:
+    diff_length_sq = (new_fruit[0] - item[0]) ** 2
+    diff_width_sq = (new_fruit[1] - item[1]) ** 2
+    dist = math.sqrt(diff_length_sq + diff_width_sq)
+    distances.append(dist)
 
-
-distances = np.linalg.norm(X_train - new_fruit, axis=1)
-
-
-k = 1
-nearest_neighbor_idx = np.argmin(distances)
-predicted_label = int(y_train[nearest_neighbor_idx])
+min_dist = min(distances)
+min_index = distances.index(min_dist)
+predicted_label = int(y_train[min_index])
 predicted_name = "موز" if predicted_label == 0 else "سیب"
 
-print(
-    f"پیش‌بینی برای میوه جدید: {predicted_name} (کمترین فاصله: {distances[nearest_neighbor_idx]:.2f})"
-)
-
+print("--- نتیجه میوه جدید ---")
+print(f"کمترین فاصله: {min_dist:.2f}")
+print(f"پیش‌بینی برای میوه جدید: {predicted_name} (کلاس {predicted_label})\n")
 
 correct_predictions = 0
-for idx, test_sample in enumerate(X_test):
-    test_dists = np.linalg.norm(X_train - test_sample, axis=1)
-    pred = int(y_train[np.argmin(test_dists)])
-    if pred == y_test[idx]:
+
+for test_sample in test_data:
+    test_dists = []
+    for train_sample in train_data:
+        d = math.sqrt(
+            (test_sample[0] - train_sample[0]) ** 2
+            + (test_sample[1] - train_sample[1]) ** 2
+        )
+        test_dists.append(d)
+
+    closest_train_idx = test_dists.index(min(test_dists))
+    test_pred_label = train_data[closest_train_idx][2]
+
+    if test_pred_label == test_sample[2]:
         correct_predictions += 1
 
-accuracy = (correct_predictions / len(X_test)) * 100
-print(f"دقت روی داده‌های تست: {accuracy:.0f}%")
-
+accuracy = (correct_predictions / len(test_data)) * 100
+print("--- ارزیابی مدل ---")
+print(f"دقت نهایی روی داده‌های تست: {accuracy:.0f}%\n")
 
 plt.figure(figsize=(8, 6))
+
 plt.scatter(
     X_train[y_train == 0, 0],
     X_train[y_train == 0, 1],
     color="orange",
     label="Banana (Train)",
-    s=70,
+    s=80,
 )
 plt.scatter(
     X_train[y_train == 1, 0],
     X_train[y_train == 1, 1],
     color="red",
     label="Apple (Train)",
-    s=70,
+    s=80,
 )
 plt.scatter(
     new_fruit[0],
     new_fruit[1],
     color="green",
     marker="*",
-    s=200,
+    s=220,
     label=f"New Fruit ({predicted_name})",
 )
 plt.scatter(
-    X_test[:, 0],
-    X_test[:, 1],
+    test_data[:, 0],
+    test_data[:, 1],
     color="purple",
     marker="X",
-    s=100,
+    s=120,
     label="Test Samples",
 )
 
 plt.xlabel("Length (طول)")
 plt.ylabel("Width (عرض)")
-plt.title("Fruit Classification using k-NN")
+plt.title("Fruit Classification using Exact Euclidean Distance")
 plt.legend()
 plt.grid(True)
 plt.show()
