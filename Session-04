@@ -2,14 +2,13 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-# ۱. داده‌های اولیه
+
 banana_lengths = [18, 20, 17, 22]
 banana_widths = [3.5, 4.0, 3.2, 4.2]
 
 apple_lengths = [8, 7.5, 8.5, 9]
 apple_widths = [7.5, 8.0, 8.2, 8.5]
 
-# ۲. تفکیک داده‌های آموزش و تست (۳ نمونه Train و ۱ نمونه Test برای هر میوه)
 train_data = []
 test_data = []
 
@@ -33,7 +32,7 @@ new_fruit = np.array([19.0, 3.8])
 # فاصله اقلیدسی همه نقاط آموزش تا میوه جدید در یک خط
 distances = np.linalg.norm(X_train - new_fruit, axis=1)
 
-# تعیین نزدیک‌ترین همسایه (k=1)
+
 k = 1
 nearest_neighbor_idx = np.argmin(distances)
 predicted_label = int(y_train[nearest_neighbor_idx])
@@ -43,7 +42,7 @@ print(
     f"پیش‌بینی برای میوه جدید: {predicted_name} (کمترین فاصله: {distances[nearest_neighbor_idx]:.2f})"
 )
 
-# ۴. ارزیابی دقت روی مجموعه‌ آزمون (Test Set)
+
 correct_predictions = 0
 for idx, test_sample in enumerate(X_test):
     test_dists = np.linalg.norm(X_train - test_sample, axis=1)
@@ -54,7 +53,7 @@ for idx, test_sample in enumerate(X_test):
 accuracy = (correct_predictions / len(X_test)) * 100
 print(f"دقت روی داده‌های تست: {accuracy:.0f}%")
 
-# ۵. رسم نمودار
+
 plt.figure(figsize=(8, 6))
 plt.scatter(
     X_train[y_train == 0, 0],
