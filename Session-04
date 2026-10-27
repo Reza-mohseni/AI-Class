@@ -26,10 +26,10 @@ test_data = np.array(test_data)
 X_train, y_train = train_data[:, :2], train_data[:, 2]
 X_test, y_test = test_data[:, :2], test_data[:, 2]
 
-# ۳. طبقه‌بندی میوه جدید با k-NN (محاسبه برداری)
+
 new_fruit = np.array([19.0, 3.8])
 
-# فاصله اقلیدسی همه نقاط آموزش تا میوه جدید در یک خط
+
 distances = np.linalg.norm(X_train - new_fruit, axis=1)
 
 
